@@ -8,6 +8,7 @@
 
 // • You may only use the following functions : exit, open, close,
 // write, read, malloc and free
+// TODO: bsq_object destructor
 
 int	read_initial_values_from_buffer_to_target(char *buffer, bsq_object *bsq_obj)
 {
