@@ -8,7 +8,6 @@
 
 // • You may only use the following functions : exit, open, close,
 // write, read, malloc and free
-// TODO: bsq_object destructor
 
 int	read_initial_values_from_buffer_to_target(char *buffer, bsq_object *bsq_obj)
 {
@@ -31,23 +30,11 @@ int	read_initial_values_from_buffer_to_target(char *buffer, bsq_object *bsq_obj)
 	bsq_obj->full = buffer[i++];
 	if (buffer[i] == '\n')
 		i++;
+	else
+		exit(125);
 	return (i);
 }
 
-bsq_object	*construct_bsq_object()
-{
-	bsq_object	*bsq_obj;
-
-	if (!(bsq_obj = malloc(sizeof(bsq_object))))
-		return (0);
-	bsq_obj->height = 0;
-	bsq_obj->width = 0;
-	bsq_obj->empty = '\0';
-	bsq_obj->obstacle = '\0';
-	bsq_obj->full = '\0';
-	bsq_obj->map = NULL;
-	return (bsq_obj);
-}
 
 int	moar_space(char **buffer, int totalsize)
 {
@@ -105,7 +92,6 @@ bsq_object	*initialize_bsq_object_and_read_data(char *filename)
 	bsq_object	*bsq_obj;
 
 	bsq_obj = construct_bsq_object();
-	
 	if (filename != NULL)
 	{
 		file_descriptor = open(filename, O_RDONLY);
@@ -131,21 +117,24 @@ int	main(int argc, char *argv[])
 		while (i < argc)
 		{
 			bsq_obj = initialize_bsq_object_and_read_data(argv[i++]);
-			printf("%i\n", bsq_obj->height);
-			printf("%c\n", bsq_obj->empty);
-			printf("%c\n", bsq_obj->obstacle);
-			printf("%c\n", bsq_obj->full);
+			printf("height %i\n", bsq_obj->height);
+			printf("empty %c\n", bsq_obj->empty);
+			printf("obstacle %c\n", bsq_obj->obstacle);
+			printf("full %c\n", bsq_obj->full);
 			printf("%s\n", bsq_obj->map);
+			printf("largest size is %i\n", get_biggest_square_brute_force(bsq_obj));
+			destruct_bsq_object(bsq_obj);
 		}
 	}
 	else
 	{
 		bsq_obj = initialize_bsq_object_and_read_data(NULL);
-		printf("%i\n", bsq_obj->height);
-		printf("%c\n", bsq_obj->empty);
-		printf("%c\n", bsq_obj->obstacle);
-		printf("%c\n", bsq_obj->full);
+		printf("height %i\n", bsq_obj->height);
+		printf("empty %c\n", bsq_obj->empty);
+		printf("obstacle %c\n", bsq_obj->obstacle);
+		printf("full %c\n", bsq_obj->full);
 		printf("%s\n", bsq_obj->map);
+		destruct_bsq_object(bsq_obj);
 	}
 	return (0);
 }
